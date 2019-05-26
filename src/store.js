@@ -5,7 +5,10 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    selectedPB: null,
+    selectedPB: {
+      value: null,
+      selected: false,
+    },
     selectedData: [],
     tableData: []
   },

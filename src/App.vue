@@ -4,6 +4,15 @@
     margin: auto;
     display: flex;
     flex-direction: row;
+    @media only screen and (max-width: 600px) {
+        flex-direction: column;
+        .button-section{
+            margin-left: initial !important;
+            button {
+                margin: 10px 0 0 0 !important;
+            }
+        }
+    }
     .button-section{
         flex: 0.2;
         display: flex;
@@ -80,7 +89,7 @@ export default {
     },
     data () {
         return {
-            powerballData: this.setDefaultPowerBallData(),
+            powerballData: this.setDefaultData().powerBallRecords,
             selectedData: this.setDefaultData().selectedRecords,
             tableData: this.setDefaultData().tableRecords
         }
@@ -89,22 +98,11 @@ export default {
         ...mapMutations([
             "SET_SELECTED_PB"
         ]),
-        setDefaultPowerBallData() {
-            let powerBallRecords = [];
-            for (let i = 1; i < 21; i++) {
-                let powerBallRecord = {
-                    value: i,
-                    selected: false
-                }
-                powerBallRecords.push(powerBallRecord);
-            }
-
-            return powerBallRecords;
-        },
         setDefaultData() {
             let data = {
                 tableRecords: [],
-                selectedRecords: []
+                selectedRecords: [],
+                powerBallRecords: []
             };
             for (let i = 1; i < 36; i++) {
                 let tableRecord = {
@@ -118,6 +116,13 @@ export default {
                     }
 
                     data.selectedRecords.push(selectedRecord);
+                }
+                if (i < 21) {
+                    let powerBallRecord = {
+                        value: i,
+                        selected: false
+                    }
+                    data.powerBallRecords.push(powerBallRecord);
                 }
                 data.tableRecords.push(tableRecord);
             }
@@ -144,8 +149,11 @@ export default {
         resetData() {
             this.selectedData = this.setDefaultData().selectedRecords,
             this.tableData = this.setDefaultData().tableRecords
-            this.powerballData = this.setDefaultPowerBallData();
-            this.SET_SELECTED_PB("");
+            this.powerballData = this.setDefaultData().powerBallRecords;
+            this.SET_SELECTED_PB({
+                value: null,
+                selected: false
+            });
         }
     }
 }
